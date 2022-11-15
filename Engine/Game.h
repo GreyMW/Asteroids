@@ -23,6 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
+//#include "FrameTimer.h"
+#include "Header Files/FrameTimer.h"
 
 class Game
 {
@@ -43,4 +45,5 @@ private:
 	/********************************/
 	/*  User Variables              */
 	/********************************/
+	FrameTimer frame_timer;
 };

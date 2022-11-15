@@ -20,6 +20,8 @@
  ******************************************************************************************/
 #include "MainWindow.h"
 #include "Game.h"
+#include <chrono>
+#include "Header Files/FrameTimer.h"
 
 Game::Game( MainWindow& wnd )
 	:
@@ -38,8 +40,10 @@ void Game::Go()
 
 void Game::UpdateModel()
 {
+	frame_timer.update_delta_time();
+
 }
 
-void Game::ComposeFrame()
-{
+void Game::ComposeFrame() {
+	
 }
