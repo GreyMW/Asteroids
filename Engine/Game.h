@@ -24,7 +24,7 @@
 #include "Mouse.h"
 #include "Graphics.h"
 //#include "FrameTimer.h"
-#include "Header Files/FrameTimer.h"
+#include "FrameTimer.h"
 
 class Game
 {

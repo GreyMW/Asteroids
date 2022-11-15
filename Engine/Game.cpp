@@ -21,7 +21,7 @@
 #include "MainWindow.h"
 #include "Game.h"
 #include <chrono>
-#include "Header Files/FrameTimer.h"
+#include "FrameTimer.h"
 
 Game::Game( MainWindow& wnd )
 	:
