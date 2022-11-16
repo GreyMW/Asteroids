@@ -23,8 +23,8 @@
 #include "Keyboard.h"
 #include "Mouse.h"
 #include "Graphics.h"
-//#include "FrameTimer.h"
 #include "FrameTimer.h"
+#include "Ship.h"
 
 class Game
 {
@@ -46,4 +46,6 @@ private:
 	/*  User Variables              */
 	/********************************/
 	FrameTimer frame_timer;
+	Ship ship;
+
 };

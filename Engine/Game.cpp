@@ -22,12 +22,15 @@
 #include "Game.h"
 #include <chrono>
 #include "FrameTimer.h"
+#include "Ship.h"
 
 Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
-	gfx( wnd )
+	gfx( wnd ),
+	ship(300,300,10,10)
 {
+	
 }
 
 void Game::Go()
@@ -45,5 +48,5 @@ void Game::UpdateModel()
 }
 
 void Game::ComposeFrame() {
-	
+	ship.draw(gfx);
 }
