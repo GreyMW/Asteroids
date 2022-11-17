@@ -28,7 +28,7 @@ Game::Game( MainWindow& wnd )
 	:
 	wnd( wnd ),
 	gfx( wnd ),
-	ship(300,300,10,10)
+	ship(300,300,10,20)
 {
 	
 }
@@ -44,6 +44,7 @@ void Game::Go()
 void Game::UpdateModel()
 {
 	frame_timer.update_delta_time();
+	ship.update_rotation(wnd.kbd, frame_timer);
 
 }
 

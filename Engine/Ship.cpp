@@ -3,6 +3,8 @@
 #include "Matrix_2x2.h"
 #define _USE_MATH_DEFINES
 #include <math.h>
+#include "FrameTimer.h"
+
 
 
 Ship::Ship(int center_x, int center_y, int height_in, int width_in)
@@ -11,7 +13,8 @@ Ship::Ship(int center_x, int center_y, int height_in, int width_in)
 	y = center_y;
 	height = height_in;
 	width = width_in;
-	rotation = 0;
+	rotation = 0.0f;
+	rotation_speed = 50.0f;
 }
 
 void Ship::draw(Graphics& gfx) 
@@ -37,7 +40,7 @@ void Ship::draw(Graphics& gfx)
 
 				Vector2 vec(static_cast<float>(i), static_cast<float>(j));
 
-				vec = rotate_ship(270, vec);
+				vec = rotate_ship(rotation, vec);
 
 				gfx.PutPixel(vec, 255, 255, 255);
 			}
@@ -65,4 +68,16 @@ Vector2 Ship::rotate_ship(const float degrees, Vector2& vec)
 	return (rotation_matrix * vec) + Vector2(float(x),float(y));
 	
 
+}
+
+void Ship::update_rotation(const Keyboard& kbd, const FrameTimer& frame_timer)
+{
+	if(kbd.KeyIsPressed(VK_LEFT))
+	{
+		rotation += frame_timer.time_since_last_frame() * rotation_speed;
+	}
+	if(kbd.KeyIsPressed(VK_RIGHT))
+	{
+		rotation -= frame_timer.time_since_last_frame() * rotation_speed;
+	}
 }
