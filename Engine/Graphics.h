@@ -60,7 +60,7 @@ public:
 	void PutPixel( int x,int y,Color c );
 	void PutPixel(Vector2 vec, int r, int g, int b)
 	{
-		PutPixel(int(vec.x), int(vec.y), { unsigned char(r),unsigned char(g),unsigned char(b) });
+		PutPixel(static_cast<int>(vec.x), static_cast<int>(vec.y), { unsigned char(r),unsigned char(g),unsigned char(b) });
 	}
 	~Graphics();
 private:

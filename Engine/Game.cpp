@@ -45,6 +45,8 @@ void Game::UpdateModel()
 {
 	frame_timer.update_delta_time();
 	ship.update_rotation(wnd.kbd, frame_timer);
+	ship.update_velocity(wnd.kbd, frame_timer);
+	ship.update_position(frame_timer);
 
 }
 

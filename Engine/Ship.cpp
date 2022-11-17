@@ -7,17 +7,20 @@
 
 
 
-Ship::Ship(int center_x, int center_y, int height_in, int width_in)
+Ship::Ship(float center_x, float center_y, int height_in, int width_in)
 {
 	x = center_x;
 	y = center_y;
 	height = height_in;
 	width = width_in;
+	//stored in degrees
 	rotation = 0.0f;
 	rotation_speed = 50.0f;
+	velocity = Vector2(0.0f, 0.0f);
+	
 }
 
-void Ship::draw(Graphics& gfx) 
+void Ship::draw(Graphics& gfx) const
 {
 
 	float percentage_x = 1.0f;
@@ -25,13 +28,13 @@ void Ship::draw(Graphics& gfx)
 	for(int j = height; j > ( -1 * height); j--)
 	{
 		//percentage of how high we are on the triangle
-		percentage_y = float(abs(j)) / float(height);
+		percentage_y = static_cast<float>(abs(j)) / static_cast<float>(height);
 		
 
 		for(int i = (-1*width); i < width; i++)
 		{
 			//how far along we are on the triangle
-			percentage_x = float(width - i) / float(width*2);
+			percentage_x = static_cast<float>(width - i) / static_cast<float>(width * 2);
 
 			//as long as how far along we are is greater or equal to how high we are on the triangle
 			//it's part of the triangle
@@ -40,6 +43,7 @@ void Ship::draw(Graphics& gfx)
 
 				Vector2 vec(static_cast<float>(i), static_cast<float>(j));
 
+				//Rotates each pixel of the ship individually
 				vec = rotate_ship(rotation, vec);
 
 				gfx.PutPixel(vec, 255, 255, 255);
@@ -49,7 +53,7 @@ void Ship::draw(Graphics& gfx)
 	}
 }
 
-Vector2 Ship::rotate_ship(const float degrees, Vector2& vec)
+Vector2 Ship::rotate_ship(const float degrees, Vector2& vec) const
 {
 	//affine transformation for rotation C = M(B-A)+A
 	//where C is the final vector
@@ -65,7 +69,7 @@ Vector2 Ship::rotate_ship(const float degrees, Vector2& vec)
 
 	//the vector comes in as B-A
 	//M(B-A)+A
-	return (rotation_matrix * vec) + Vector2(float(x),float(y));
+	return (rotation_matrix * vec) + Vector2(static_cast<float>(x),static_cast<float>(y));
 	
 
 }
@@ -80,4 +84,41 @@ void Ship::update_rotation(const Keyboard& kbd, const FrameTimer& frame_timer)
 	{
 		rotation -= frame_timer.time_since_last_frame() * rotation_speed;
 	}
+}
+
+void Ship::update_velocity(const Keyboard& kbd, const FrameTimer& frame_timer)
+{
+	const float radians = float(rotation * M_PI / 180.0f);
+
+	if(kbd.KeyIsPressed(VK_UP))
+	{
+		velocity += Vector2(frame_timer.time_since_last_frame() * static_cast<float>(cos(radians)) * acceleration,
+			frame_timer.time_since_last_frame() * static_cast<float>(sin(radians)) * acceleration*-1.0f);
+
+		//caps velocity
+		//if(velocity > velocity_cap)
+		//{
+		//	velocity = velocity_cap;
+		//}
+	}
+	if (kbd.KeyIsPressed(VK_DOWN))
+	{
+		velocity -= Vector2(frame_timer.time_since_last_frame() * static_cast<float>(cos(radians)) * acceleration,
+			frame_timer.time_since_last_frame() * static_cast<float>(sin(radians)) * acceleration*-1.0f);
+
+		//negative acceleration not allowed
+		//if(velocity < 0.0f)
+		//{
+		//	velocity = 0.0f;
+		//}
+	}
+}
+
+void Ship::update_position(const FrameTimer& frame_timer)
+{
+	
+	const float delta_x = velocity.x * frame_timer.time_since_last_frame();
+	const float delta_y = velocity.y * frame_timer.time_since_last_frame();
+	x += delta_x;
+	y += delta_y;
 }
