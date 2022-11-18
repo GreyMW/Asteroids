@@ -7,10 +7,10 @@
 
 
 
+
 Ship::Ship(float center_x, float center_y, int height_in, int width_in)
 {
-	x = center_x;
-	y = center_y;
+	xy = Vector2(center_x, center_y);
 	height = height_in;
 	width = width_in;
 	//stored in degrees
@@ -45,6 +45,7 @@ void Ship::draw(Graphics& gfx) const
 
 				//Rotates each pixel of the ship individually
 				vec = rotate_ship(rotation, vec);
+				Graphics::wrap_bounds(vec);
 
 				gfx.PutPixel(vec, 255, 255, 255);
 			}
@@ -69,7 +70,7 @@ Vector2 Ship::rotate_ship(const float degrees, Vector2& vec) const
 
 	//the vector comes in as B-A
 	//M(B-A)+A
-	return (rotation_matrix * vec) + Vector2(static_cast<float>(x),static_cast<float>(y));
+	return (rotation_matrix * vec) + xy;
 	
 
 }
@@ -90,6 +91,7 @@ void Ship::update_velocity(const Keyboard& kbd, const FrameTimer& frame_timer)
 {
 	const float radians = float(rotation * M_PI / 180.0f);
 
+	//the -1.0f in the y is because the screen is non-euclidian
 	if(kbd.KeyIsPressed(VK_UP))
 	{
 		velocity += Vector2(frame_timer.time_since_last_frame() * static_cast<float>(cos(radians)) * acceleration,
@@ -119,6 +121,9 @@ void Ship::update_position(const FrameTimer& frame_timer)
 	
 	const float delta_x = velocity.x * frame_timer.time_since_last_frame();
 	const float delta_y = velocity.y * frame_timer.time_since_last_frame();
-	x += delta_x;
-	y += delta_y;
+	xy.x += delta_x;
+	xy.y += delta_y;
+
+	Graphics::wrap_bounds(xy);
+	
 }

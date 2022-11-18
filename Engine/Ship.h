@@ -2,6 +2,7 @@
 #include "Graphics.h"
 #include "Keyboard.h"
 #include "FrameTimer.h"
+
 //#include "Vector2.h"
 
 class Ship
@@ -18,8 +19,9 @@ public:
 private:
 
 	//x and y are stored as float for smooth movement
-	float x;
-	float y;
+	//float x;
+	//float y;
+	Vector2 xy;
 
 	int width;
 	int height;

@@ -358,3 +358,25 @@ std::wstring Graphics::Exception::GetExceptionType() const
 {
 	return L"Chili Graphics Exception";
 }
+
+void Graphics::wrap_bounds(Vector2& vec)
+{
+	//0 based indexing requires -1
+	if (vec.x > Graphics::ScreenWidth - 1)
+	{
+		vec.x -= Graphics::ScreenWidth;
+	}
+	if (vec.x < 0)
+	{
+		vec.x += Graphics::ScreenWidth;
+	}
+	if (vec.y > Graphics::ScreenHeight - 1)
+	{
+		vec.y -= Graphics::ScreenHeight;
+	}
+	if (vec.y < 0)
+	{
+		vec.y += Graphics::ScreenHeight;
+	}
+
+}
